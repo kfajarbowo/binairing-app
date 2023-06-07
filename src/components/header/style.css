@@ -36,6 +36,16 @@
     border-bottom-right-radius: 7px;
     padding: 7px;
   }
+
+  .btns-long:hover {
+    background-color: var(--darkblue-03);
+    color: #fff;
+    transition: all .7s;
+    border: none;
+    border-bottom-left-radius: 7px;
+    border-bottom-right-radius: 7px;
+    padding: 7px;
+  }
   
   .btns {
     background-color: var(--darkblue-04);
@@ -63,6 +73,15 @@
     border-bottom-left-radius: 7px;
     border-top-right-radius: 7px;
     padding: 2px 8px;
+  }
+
+  /* TEXT */
+  .txt-primary{
+    color: var(--darkblue-04);
+  }
+  
+  .txt-primary:hover{
+    color: var(--darkblue-03);
   }
   
   
