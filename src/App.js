@@ -5,6 +5,7 @@ import Home from './pages/Home';
 import Login from './pages/Login';
 import Register from './pages/Register'
 import ResetPassword from './pages/ResetPassword'
+import Search from './pages/Search';
 
 
 function App() {
@@ -16,6 +17,7 @@ function App() {
 				<Route path="/login" element={<Login />} />
 				<Route path="/register" element={<Register />} />
 				<Route path="/resetpassword" element={<ResetPassword />} />
+				<Route path="/search" element={<Search />} />
 			</Routes>
 		</BrowserRouter>
 	);
