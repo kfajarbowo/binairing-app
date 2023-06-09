@@ -42,7 +42,7 @@ const Header = () => {
             </div>
           </Nav>
           <Nav>
-            <button as={Link} to={"/login"} className="btns-normal m-1">
+            <button as={Link} to={"/login"} className="btns m-1">
               <ArrowRightSquareFill /> Masuk
             </button>
           </Nav>
