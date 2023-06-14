@@ -4,7 +4,7 @@
   height: 100px;
   position: relative;
   background-color: var(--darkblue-04);
-  left: calc(-1 * (100vw - 100%) / 2);
+  left: calc(-1 * (99vw - 100%) / 2);
 }
 
 /* BUTTON */
@@ -13,9 +13,10 @@
   color: var(--Neutral--01);
   transition: all 0.7s;
   border: none;
-  border-bottom-left-radius: 7px;
-  border-bottom-right-radius: 7px;
+  border-bottom-left-radius: 12px;
+  border-bottom-right-radius: 12px;
   padding: 7px;
+  text-decoration: none;
 }
 
 .btns-long:hover {
@@ -23,9 +24,10 @@
   color: var(--Neutral--01);
   transition: all 0.7s;
   border: none;
-  border-bottom-left-radius: 7px;
-  border-bottom-right-radius: 7px;
+  border-bottom-left-radius: 12px;
+  border-bottom-right-radius: 12px;
   padding: 7px;
+  text-decoration: none;
 }
 
 .btns {
@@ -35,6 +37,17 @@
   border: none;
   border-radius: 10px;
   padding: 8px 1em;
+  text-decoration: none;
+}
+
+.btns-country {
+  background-color: var(--darkblue-04);
+  color: var(--Neutral--01);
+  transition: all 0.7s;
+  border: none;
+  border-radius: 10px;
+  padding: 8px 1em;
+  text-decoration: none;
 }
 
 .btns-repeat {
@@ -42,19 +55,21 @@
   color: var(--Neutral--01);
   transition: all 0.7s;
   border: 2px solid var(--darkblue-04);
-  border-radius: 10px;
-  padding: 6px 0.7em;
+  border-radius: 12px;
+  padding: 1px 5px;
+  text-decoration: none;
 }
 
-.btns-outline {
+.btns-outline-number {
   background-color: var(--Neutral--01);
   border: 1px solid var(--Neutral--02);
   color: var(--Neutral--05);
   transition: all 0.7s;
   border-radius: 10px;
-  padding: 6px 1.5rem;
+  padding: 6px 1.4rem;
   margin-left: 4px;
   margin-right: 4px;
+  text-decoration: none;
 }
 
 .btns-outline-small {
@@ -64,20 +79,23 @@
   transition: all 0.7s;
   border-radius: 10px;
   padding: 6px 0.7em;
+  text-decoration: none;
 }
 
 .btns-outline-small:hover {
   background-color: var(--darkblue-04);
   color: var(--Neutral--01);
+  text-decoration: none;
 }
 
-.btns-secondary {
+.btns-country-secondary {
   background-color: var(--darkblue-01);
   color: var(--Neutral--05);
   transition: all 0.7s;
   border: none;
   border-radius: 10px;
   padding: 8px 1em;
+  text-decoration: none;
 }
 
 .btns-tags {
@@ -88,6 +106,7 @@
   border-bottom-left-radius: 7px;
   border-top-right-radius: 7px;
   padding: 2px 8px;
+  text-decoration: none;
 }
 
 /* TEXT INSIDE CARD DESTINATION */
@@ -105,12 +124,9 @@
   font-weight: 500;
 }
 
-.price {
-  display: block;
-}
-
 .price .idr {
   color: red;
+  display: block;
 }
 
 /* TEXT */
@@ -123,7 +139,7 @@
 }
 
 /* ICONS */
-.icons {
+.ikon {
   color: var(--success);
 }
 
@@ -136,13 +152,18 @@ li.active-list {
 /* SWITCH */
 .form-check .form-check-input:checked {
   background-color: var(--darkblue-04);
-  height: 1.6rem;
-  width: 2.6rem;
+  height: 1rem;
+  width: 2rem;
 }
 
 .form-check .form-check-input:not(:checked) {
   background-color: white;
   border-color: gray;
-  height: 1.6rem;
-  width: 2.6rem;
+  height: 1rem;
+  width: 2rem;
+}
+
+.rounded-custom {
+  border-radius: 12px;
+  box-shadow: var(--shadow-high);
 }
