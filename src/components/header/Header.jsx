@@ -43,9 +43,9 @@ const Header = () => {
             </div>
           </Nav>
           <Nav>
-            <button as={Link} to={"/login"} className="btns m-1">
+            <Link to="/login" type="submit" className="btns-link m-1">
               <ArrowRightSquareFill /> Masuk
-            </button>
+            </Link>
           </Nav>
         </Navbar.Collapse>
       </Container>

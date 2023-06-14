@@ -7,6 +7,7 @@ import Register from "./pages/Register";
 import ResetPassword from "./pages/ResetPassword";
 import Search from "./pages/Search";
 import Checkout from "./pages/Checkout";
+import Notification from "./pages/Notification/Notification";
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
         <Route path="/resetpassword" element={<ResetPassword />} />
         <Route path="/search" element={<Search />} />
         <Route path="/checkout" element={<Checkout />} />
+        <Route path="/notification" element={<Notification />} />
       </Routes>
     </BrowserRouter>
   );

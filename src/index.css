@@ -25,8 +25,27 @@
   --Neutral--01: #FFFFFF;
 
   /* Shadow */
-  --shadow-low: box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.15);
-  --shadow-high: box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.15);
+  --shadow-low: 0px 0px 4px rgba(0, 0, 0, 0.15);
+  --shadow-high: 0px 0px 10px rgba(0, 0, 0, 0.15);
+
+  /* font-weight */
+  --font-light : 400;
+  --font-regular : 500;
+  --font-semi-bold: 600;
+  --font-bold : 700;
+
+  /* text-body-size */
+  --body-font-10 : 10px;
+  --body-font-12 : 12px;
+  --body-font-14 : 14px;
+
+  /* text-title-size */
+  --title-font-16 : 16px;
+  --title-font-18 : 18px;
+
+  /* text-heading-size*/
+  --heading-font-20 : 20px;
+  --heading-font-24 : 24px;
 }
 
 body {
@@ -37,6 +56,7 @@ body {
 }
 *{
   font-family: 'Poppins', sans-serif;
+  
 }
 
 /* code {
