@@ -1,6 +1,13 @@
 import React, { useEffect, useRef, useState } from "react";
 import "../Home/Home.css";
-import { Container, FormControl, InputGroup, Modal } from "react-bootstrap";
+import {
+  Card,
+  Container,
+  FormControl,
+  Image,
+  InputGroup,
+  Modal,
+} from "react-bootstrap";
 import {
   AirplaneFill,
   ArrowRightShort,
@@ -13,11 +20,13 @@ import {
   Repeat,
   Search,
 } from "react-bootstrap-icons";
+import banner from "../../assets/banner.png";
 import bangkok from "../../assets/bangkok.png";
 import sydney from "../../assets/sydney.png";
 import "daterangepicker/daterangepicker.css";
 import $ from "jquery";
 import "daterangepicker";
+import { Link } from "react-router-dom";
 
 const Home = () => {
   // -------------------------- DATE PICKER-----------------------
@@ -190,183 +199,194 @@ const Home = () => {
       {/* Header */}
       <div className="row">
         <div className="col">
-          <header className="header"></header>
+          <header className="d-flex justify-content-center mt-3">
+            <img src={banner} alt="Logo" className="img-fluid" />
+          </header>
         </div>
       </div>
 
-      {/* Flight search */}
-      <div className="card text-center mt-1">
-        <div className="card-body">
-          <div className="card-title text-start mb-4">
-            <h5 style={{ fontWeight: 700 }}>
-              Pilih jadwal penerbangan spesial di{" "}
-              <span style={{ color: "#7126B5" }}>Tiketku!</span>
-            </h5>
-          </div>
+      <div className="d-flex justify-content-center">
+        <div className="col-12 col-sm-10">
+          <Card className="text-center mt-1 rounded-custom">
+            <Card.Body>
+              <div className="card-title text-start mb-4">
+                <h5 style={{ fontWeight: 700 }}>
+                  Pilih jadwal penerbangan spesial di{" "}
+                  <span style={{ color: "#7126B5" }}>Tiketku!</span>
+                </h5>
+              </div>
+              <div className="row">
+                <div className="col-md-6">
+                  <div className="d-flex align-items-center">
+                    {/* <AirplaneFill size={20} /> */}
+                    <span className="align-self-center" color="gray">
+                      From
+                    </span>
+                    <InputGroup className="ms-1">
+                      <FormControl
+                        placeholder="Enter your text"
+                        onClick={handleShowModal1}
+                        value={selectedItemFrom}
+                      />
+                    </InputGroup>
+                    <button
+                      className="btns-repeat ms-md-3 ms-1 me-0"
+                      type="submit"
+                    >
+                      <Repeat size={18} />
+                    </button>
+                  </div>
+                </div>
+                <div className="col-md-6 col-12">
+                  <div className="d-flex align-items-center">
+                    {/* <AirplaneFill size={20} /> */}
+                    <span className="align-self-center" color="gray">
+                      To
+                    </span>
+                    <InputGroup className="ms-1 mt-md-0 mt-2">
+                      <FormControl
+                        placeholder="Enter your text"
+                        onClick={handleShowModal2}
+                        value={selectedItemTo}
+                      />
+                    </InputGroup>
+                  </div>
+                </div>
+              </div>
+              <hr className="my-4" />
+              <div className="row mt-md-2">
+                <div className="d-flex flex-column flex-sm-row align-items-start">
+                  <div className="col-12 col-md-3">
+                    <div>
+                      <span>Departure</span>
+                      <InputGroup className="">
+                        <FormControl
+                          placeholder="Enter your text"
+                          value={
+                            selectedDateRange
+                              ? selectedDateRange.split(" to ")[0]
+                              : ""
+                          }
+                          ref={departureInputRef}
+                        />
+                      </InputGroup>
+                    </div>
+                  </div>
 
-          {/* Flight details */}
-          <div className="row">
-            <div className="d-flex align-items-center">
-              <AirplaneFill size={50} />
-              <span className="align-self-center ms-2" color="gray">
-                From
-              </span>
-              <InputGroup className="ms-2">
-                <FormControl
-                  placeholder="Enter your text"
-                  onClick={handleShowModal1}
-                  value={selectedItemFrom}
-                />
-              </InputGroup>
-              <button className="btns-repeat ms-4 me-4" type="submit">
-                <Repeat size={16} />
-              </button>
-              <AirplaneFill size={50} />
-              <span className="align-self-center ms-2" color="gray">
-                To
-              </span>
-              <InputGroup className="ms-2">
-                <FormControl
-                  placeholder="Enter your text"
-                  onClick={handleShowModal2}
-                  value={selectedItemTo}
-                />
-              </InputGroup>
-            </div>
-          </div>
+                  <div className="col-12 col-md-3 d-flex align-items-center ms-1">
+                    <div className="ms-md-1">
+                      <span>Return</span>
+                      <InputGroup className="">
+                        <FormControl
+                          placeholder="Enter your text"
+                          value={
+                            selectedDateRange
+                              ? selectedDateRange.split(" to ")[1]
+                              : ""
+                          }
+                          ref={returnInputRef}
+                        />
+                      </InputGroup>
+                    </div>
+                    <div className="ms-1 form-check form-switch ">
+                      <input
+                        className="form-check-input"
+                        type="checkbox"
+                        role="switch"
+                        id="flexSwitchCheckChecked"
+                      />
+                    </div>
+                  </div>
 
-          {/* Modal 1 FROM */}
-          <Modal show={showModal1} onHide={handleCloseModal1}>
-            <Modal.Header closeButton></Modal.Header>
-            <Modal.Body>
-              <div className="input-group rounded">
-                <input
-                  type="search"
-                  className="form-control rounded"
-                  placeholder="Search"
-                  aria-label="Search"
-                  aria-describedby="search-addon"
-                />
-                <span className="input-group-text border-0" id="search-addon">
-                  <Search />
-                </span>
+                  <div className="col-12 col-md-3 ">
+                    <span>Passengers</span>
+                    <InputGroup className="">
+                      <FormControl
+                        placeholder="Enter your text"
+                        onClick={handleShowModal3}
+                        value={totalCount + " Penumpang"}
+                      />
+                    </InputGroup>
+                  </div>
+                  <div className="col-12 col-md-3 ms-md-1">
+                    <span>Seat Class</span>
+                    <InputGroup className="ms-1">
+                      <FormControl
+                        placeholder="Enter your text"
+                        onClick={handleShowModal4}
+                        value={inputValue}
+                      />
+                    </InputGroup>
+                  </div>
+                </div>
               </div>
-              <div className="d-flex align-items-center justify-content-between rounded p-2">
-                <p>Pencarian terkini</p>
-                <p style={{ color: "red" }}>Hapus</p>
-              </div>
-              <ul className="">
-                {listItems.map((item, index) => (
-                  <li key={index} onClick={() => handleListItemClickFrom(item)}>
-                    {item}
-                  </li>
-                ))}
-              </ul>
-            </Modal.Body>
-          </Modal>
-
-          {/* Modal 2 TO */}
-          <Modal show={showModal2} onHide={handleCloseModal2}>
-            <Modal.Header closeButton></Modal.Header>
-            <Modal.Body>
-              <div className="input-group rounded">
-                <input
-                  type="search"
-                  className="form-control rounded"
-                  placeholder="Search"
-                  aria-label="Search"
-                  aria-describedby="search-addon"
-                />
-                <span className="input-group-text border-0" id="search-addon">
-                  <Search />
-                </span>
-              </div>
-              <div className="d-flex align-items-center justify-content-between rounded p-2">
-                <p>Pencarian terkini</p>
-                <p style={{ color: "red" }}>Hapus</p>
-              </div>
-              <ul className="">
-                {listItems.map((item, index) => (
-                  <li key={index} onClick={() => handleListItemClickTo(item)}>
-                    {item}
-                  </li>
-                ))}
-              </ul>
-            </Modal.Body>
-          </Modal>
-
-          {/* Date and passenger details */}
-          <div className="row">
-            <div className="d-flex align-items-center">
-              <Calendar size={20} />
-              <span className="align-self-center ms-2" color="gray">
-                Date
-              </span>
-              <div className="col m-1">
-                <span>Departure</span>
-                <InputGroup className="ms-2" type="text">
-                  <FormControl
-                    placeholder="Enter your text"
-                    value={
-                      selectedDateRange
-                        ? selectedDateRange.split(" to ")[0]
-                        : ""
-                    }
-                    ref={departureInputRef}
-                  />
-                </InputGroup>
-              </div>
-              <div className="col m-1">
-                <span>Return</span>
-                <InputGroup className="ms-2" type="text">
-                  <FormControl
-                    placeholder="Enter your text"
-                    value={
-                      selectedDateRange
-                        ? selectedDateRange.split(" to ")[1]
-                        : ""
-                    }
-                    ref={returnInputRef}
-                  />
-                </InputGroup>
-              </div>
-              <div className="form-check form-switch ms-3 me-2">
-                <input
-                  className="form-check-input"
-                  type="checkbox"
-                  role="switch"
-                  id="flexSwitchCheckChecked"
-                />
-              </div>
-              <PersonAdd size={26} />
-              <span className="align-self-center ms-2">To</span>
-              <div className="col m-1">
-                <span>Passengers</span>
-                <InputGroup className="ms-2">
-                  <FormControl
-                    placeholder="Enter your text"
-                    onClick={handleShowModal3}
-                    value={totalCount + " Penumpang"}
-                  />
-                </InputGroup>
-              </div>
-              <div className="col m-1">
-                <span>Seat Class</span>
-                <InputGroup className="ms-2">
-                  <FormControl
-                    placeholder="Enter your text"
-                    onClick={handleShowModal4}
-                    value={inputValue}
-                  />
-                </InputGroup>
-              </div>
-            </div>
-          </div>
+            </Card.Body>
+            <Link type="submit" className="btns-long">
+              Cari Penerbangan
+            </Link>
+          </Card>
         </div>
-        <button type="button" class="btns-long">
-          Cari Penerbangan
-        </button>
       </div>
+
+      {/* Modal 1 FROM */}
+      <Modal show={showModal1} onHide={handleCloseModal1}>
+        <Modal.Header closeButton></Modal.Header>
+        <Modal.Body>
+          <div className="input-group rounded">
+            <input
+              type="search"
+              className="form-control rounded"
+              placeholder="Search"
+              aria-label="Search"
+              aria-describedby="search-addon"
+            />
+            <span className="input-group-text border-0" id="search-addon">
+              <Search />
+            </span>
+          </div>
+          <div className="d-flex align-items-center justify-content-between rounded p-2">
+            <p>Pencarian terkini</p>
+            <p style={{ color: "red" }}>Hapus</p>
+          </div>
+          <ul className="">
+            {listItems.map((item, index) => (
+              <li key={index} onClick={() => handleListItemClickFrom(item)}>
+                {item}
+              </li>
+            ))}
+          </ul>
+        </Modal.Body>
+      </Modal>
+
+      {/* Modal 2 TO */}
+      <Modal show={showModal2} onHide={handleCloseModal2}>
+        <Modal.Header closeButton></Modal.Header>
+        <Modal.Body>
+          <div className="input-group rounded">
+            <input
+              type="search"
+              className="form-control rounded"
+              placeholder="Search"
+              aria-label="Search"
+              aria-describedby="search-addon"
+            />
+            <span className="input-group-text border-0" id="search-addon">
+              <Search />
+            </span>
+          </div>
+          <div className="d-flex align-items-center justify-content-between rounded p-2">
+            <p>Pencarian terkini</p>
+            <p style={{ color: "red" }}>Hapus</p>
+          </div>
+          <ul className="">
+            {listItems.map((item, index) => (
+              <li key={index} onClick={() => handleListItemClickTo(item)}>
+                {item}
+              </li>
+            ))}
+          </ul>
+        </Modal.Body>
+      </Modal>
 
       {/* Modal 3 PASSENGERS */}
       <Modal show={showModal3} onHide={handleCloseModal3}>
@@ -394,7 +414,7 @@ const Home = () => {
                 >
                   <DashLg />
                 </button>
-                <button className="btns-outline">{countDewasa}</button>
+                <button className="btns-outline-number">{countDewasa}</button>
                 <button
                   className="btns-outline-small"
                   onClick={increaseCountDewasa}
@@ -426,7 +446,7 @@ const Home = () => {
                 >
                   <DashLg />
                 </button>
-                <button className="btns-outline">{countAnak}</button>
+                <button className="btns-outline-number">{countAnak}</button>
                 <button
                   className="btns-outline-small"
                   onClick={increaseCountAnak}
@@ -458,7 +478,7 @@ const Home = () => {
                 >
                   <DashLg />
                 </button>
-                <button className="btns-outline">{countBayi}</button>
+                <button className="btns-outline-number">{countBayi}</button>
                 <button
                   className="btns-outline-small"
                   onClick={increaseCountBayi}
@@ -499,7 +519,7 @@ const Home = () => {
                   <div>Economy</div>
                   <div>IDR 4.950.000</div>
                 </div>
-                <div className="col d-flex align-items-center justify-content-end icons">
+                <div className="col ikon d-flex align-items-center justify-content-end ">
                   {activeItem === 0 && <CheckCircleFill />}
                 </div>
               </div>
@@ -512,10 +532,10 @@ const Home = () => {
             >
               <div className="row">
                 <div className="col">
-                  <div>Premium Economy</div>
+                  <span>Premium Economy</span>
                   <div>IDR 7.550.000</div>
                 </div>
-                <div className="col d-flex align-items-center justify-content-end icons">
+                <div className="col d-flex align-items-center justify-content-end ikon">
                   {activeItem === 1 && <CheckCircleFill />}
                 </div>
               </div>
@@ -531,7 +551,7 @@ const Home = () => {
                   <div>Business</div>
                   <div>IDR 29.220.000</div>
                 </div>
-                <div className="col d-flex align-items-center justify-content-end icons">
+                <div className="col d-flex align-items-center justify-content-end ikon">
                   {activeItem === 2 && <CheckCircleFill />}
                 </div>
               </div>
@@ -547,7 +567,7 @@ const Home = () => {
                   <div>First Class</div>
                   <div>IDR 87.620.000</div>
                 </div>
-                <div className="col d-flex align-items-center justify-content-end icons">
+                <div className="col d-flex align-items-center justify-content-end ikon">
                   {activeItem === 3 && <CheckCircleFill />}
                 </div>
               </div>
@@ -564,39 +584,51 @@ const Home = () => {
       {/* Destination section */}
       <div className="destination">
         <h5 className="mt-5 mb-3">Destinasi favorit</h5>
-        <div className="justify-content-start">
+        <div className="d-flex flex-wrap justify-content-start ms-2">
           <button
-            className={`btns${activeButton === 0 ? "" : "-secondary"} ms-3`}
+            className={`btns-country${
+              activeButton === 0 ? "" : "-secondary"
+            } mx-1 my-1`}
             onClick={() => handleButtonClick(0)}
           >
             <Search /> Semua
           </button>
           <button
-            className={`btns${activeButton === 1 ? "" : "-secondary"} ms-3`}
+            className={`btns-country${
+              activeButton === 1 ? "" : "-secondary"
+            } mx-1 my-1`}
             onClick={() => handleButtonClick(1)}
           >
             <Search /> Asia
           </button>
           <button
-            className={`btns${activeButton === 2 ? "" : "-secondary"} ms-3`}
+            className={`btns-country${
+              activeButton === 2 ? "" : "-secondary"
+            } mx-1 my-1`}
             onClick={() => handleButtonClick(2)}
           >
             <Search /> Amerika
           </button>
           <button
-            className={`btns${activeButton === 3 ? "" : "-secondary"} ms-3`}
+            className={`btns-country${
+              activeButton === 3 ? "" : "-secondary"
+            } mx-1 my-1`}
             onClick={() => handleButtonClick(3)}
           >
             <Search /> Australia
           </button>
           <button
-            className={`btns${activeButton === 4 ? "" : "-secondary"} ms-3`}
+            className={`btns-country${
+              activeButton === 4 ? "" : "-secondary"
+            } mx-1 my-1`}
             onClick={() => handleButtonClick(4)}
           >
             <Search /> Eropa
           </button>
           <button
-            className={`btns${activeButton === 5 ? "" : "-secondary"} ms-3`}
+            className={`btns-country${
+              activeButton === 5 ? "" : "-secondary"
+            } mx-1 my-1`}
             onClick={() => handleButtonClick(5)}
           >
             <Search /> Afrika
@@ -605,8 +637,8 @@ const Home = () => {
 
         {/* Destination cards */}
         <div className="row mt-4 mb-5">
-          <div className="col">
-            <div className="card border-0">
+          <div className="col-12 col-md">
+            <div className="card border-0 mt-3 mt-md-2">
               <img src={bangkok} className="card-img-top" alt="..." />
               <div className="card-img-overlay">
                 <button
@@ -630,8 +662,8 @@ const Home = () => {
               </div>
             </div>
           </div>
-          <div className="col">
-            <div className="card border-0">
+          <div className="col-12 col-md">
+            <div className="card border-0 mt-3 mt-md-2">
               <img src={bangkok} className="card-img-top" alt="..." />
               <div className="card-img-overlay">
                 <button
@@ -655,8 +687,8 @@ const Home = () => {
               </div>
             </div>
           </div>
-          <div className="col">
-            <div className="card border-0">
+          <div className="col-12 col-md">
+            <div className="card border-0 mt-3 mt-md-2">
               <img src={sydney} className="card-img-top" alt="..." />
               <div className="card-img-overlay">
                 <button
@@ -680,8 +712,8 @@ const Home = () => {
               </div>
             </div>
           </div>
-          <div className="col">
-            <div className="card border-0">
+          <div className="col-12 col-md">
+            <div className="card border-0 mt-3 mt-md-2">
               <img src={sydney} className="card-img-top" alt="..." />
               <div className="card-img-overlay">
                 <button
@@ -705,8 +737,8 @@ const Home = () => {
               </div>
             </div>
           </div>
-          <div className="col">
-            <div className="card border-0">
+          <div className="col-12 col-md">
+            <div className="card border-0 mt-3 mt-md-2">
               <img src={bangkok} className="card-img-top" alt="..." />
               <div className="card-img-overlay">
                 <button
