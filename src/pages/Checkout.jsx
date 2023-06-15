@@ -10,45 +10,106 @@ import {
 import DataPemesan from "../components/DataPemesan";
 import DataPenumpang from "../components/DataPenumpang";
 import logoMaskapai from "../assets/logoMaskapai.png";
+import { Link } from "react-router-dom";
 
 const Checkout = () => {
+  // properti CSS untuk Heading
+  const headingStyle = {
+    fontSize: "var(--title-font-18)",
+    fontWeight: "var(--font-bold)",
+    color: "var(--darkblue-04)",
+  };
+
+  // properti CSS untuk SubHeading
+  const subheadingStyle = {
+    fontSize: "var(--title-font-18)",
+    fontWeight: "var(--font-bold)",
+  };
+
+  // properti CSS untuk Title
+  const titleStyle = {
+    fontSize: "var(--title-font-16)",
+    fontWeight: "var(--font-bold)",
+  };
+
+  // properti CSS untuk paragraph
+  const paragraphStyle = {
+    fontSize: "var(--body-font-14)",
+  };
+
+  // properti CSS untuk SubParagraph
+  const subparagraphStyle = {
+    fontSize: "var(--body-font-12)",
+    color: "var(--darkblue-03)",
+    fontWeight: "var(--font-bold)",
+  };
+
+  // properti CSS untuk button
+  const buttonStyle = {
+    borderRadius: "16px",
+    backgroundColor: "var(--darkblue-04)",
+    border: "none",
+    fontSize: "var(--body-font-14)",
+  };
+
   return (
-    <Container className="bg warning mt-5">
+    <Container className="mt-5">
+      {/* Breadcrumb */}
       <Row>
         <Col>
           <Breadcrumb>
-            <Breadcrumb.Item href="#">Isi Data Diri</Breadcrumb.Item>
+            <Breadcrumb.Item
+              active
+              className="fw-bold"
+              style={{ color: "black" }}
+            >
+              Isi Data Diri
+            </Breadcrumb.Item>
             <Breadcrumb.Item active>Bayar</Breadcrumb.Item>
             <Breadcrumb.Item active>Selesai</Breadcrumb.Item>
           </Breadcrumb>
         </Col>
       </Row>
+
+      {/* Alert */}
       <Row>
         <Alert className="text-center bg-danger text-light border-0">
           Selesaikan dalam 00:15:00
         </Alert>
       </Row>
+
+      {/* Main Content */}
       <Row className="gap-4">
+        {/* Kolom Checkout Bagian Kiri */}
         <Col>
+          {/* Data Pemesan */}
           <Row className="border py-4 px-4">
             <DataPemesan />
           </Row>
+
+          {/* Data Penumpang */}
           <Row className="border py-4 px-4 mt-3">
             <DataPenumpang />
           </Row>
-          <Button type="submit" className="w-100 my-3">
+          <Button type="submit" className="w-100 my-3" style={buttonStyle}>
             Simpan
           </Button>
         </Col>
+
+        {/* Kolom Checkout Bagian Kanan */}
         <Col>
           <div className="mt-3">
-            <h5 className="fw-bold">Detail Penerbangan</h5>
+            <h5 style={subheadingStyle}>Detail Penerbangan</h5>
             <div className="d-flex justify-content-between align-items-center">
-              <h5 className="fw-bold">07:00</h5>
-              <h6 className="fw-bold">Keberangkatan</h6>
+              <h5 style={titleStyle}>07:00</h5>
+              <h6 style={subparagraphStyle}>Keberangkatan</h6>
             </div>
-            <p className="mb-0">3 Maret 2023</p>
-            <p>Soekarno Hatta - Terminal 1A Domestik</p>
+            <p className="mb-0" style={paragraphStyle}>
+              3 Maret 2023
+            </p>
+            <p style={paragraphStyle} className="fw-medium">
+              Soekarno Hatta - Terminal 1A Domestik
+            </p>
           </div>
 
           <hr />
@@ -58,12 +119,22 @@ const Checkout = () => {
               <img src={logoMaskapai} alt="" />
             </Col>
             <Col md="auto">
-              <h6 className="fw-bold">Jet Air - Economy</h6>
-              <h6 className="fw-bold mb-4">JT - 203</h6>
-              <h6 className="fw-bold">Informasi:</h6>
-              <p className="mb-0">Baggage 20kg</p>
-              <p className="mb-0">Cabin baggage 7 kg</p>
-              <p>In Flight Entertainment</p>
+              <h6 style={paragraphStyle} className="fw-bold">
+                Jet Air - Economy
+              </h6>
+              <h6 className="fw-bold mb-4" style={paragraphStyle}>
+                JT - 203
+              </h6>
+              <h6 style={paragraphStyle} className="fw-bold">
+                Informasi:
+              </h6>
+              <p className="mb-0" style={paragraphStyle}>
+                Baggage 20kg
+              </p>
+              <p className="mb-0" style={paragraphStyle}>
+                Cabin baggage 7 kg
+              </p>
+              <p style={paragraphStyle}>In Flight Entertainment</p>
             </Col>
           </Row>
 
@@ -71,36 +142,44 @@ const Checkout = () => {
 
           <div>
             <div className="d-flex justify-content-between align-items-center">
-              <h5 className="fw-bold">11:00</h5>
-              <h6 className="fw-bold">Kedatangan</h6>
+              <h5 className="fw-bold" style={titleStyle}>
+                11:00
+              </h5>
+              <h6 style={subparagraphStyle}>Kedatangan</h6>
             </div>
-            <p className="mb-0">3 Maret 2023</p>
-            <p className="fw-bold">Melbourne International Airport</p>
+            <p className="mb-0" style={paragraphStyle}>
+              3 Maret 2023
+            </p>
+            <p className="fw-medium" style={paragraphStyle}>
+              Melbourne International Airport
+            </p>
           </div>
 
           <hr />
 
           <div>
-            <h5 className="fw-bold">Rincian Harga</h5>
+            <h5 className="fw-bold" style={titleStyle}>
+              Rincian Harga
+            </h5>
             <div className="d-flex justify-content-between align-items-center">
-              <p>2 Adults</p>
-              <p>IDR 9.550.000</p>
+              <p style={paragraphStyle}>2 Adults</p>
+              <p style={paragraphStyle}>IDR 9.550.000</p>
             </div>
             <div className="d-flex justify-content-between align-items-center">
-              <p>1 Baby</p>
-              <p>IDR 0</p>
+              <p style={paragraphStyle}>1 Baby</p>
+              <p style={paragraphStyle}>IDR 0</p>
             </div>
             <div className="d-flex justify-content-between align-items-center">
-              <p>Tax</p>
-              <p>IDR 300.000</p>
+              <p style={paragraphStyle}>Tax</p>
+              <p style={paragraphStyle}>IDR 300.000</p>
             </div>
           </div>
 
           <hr />
 
           <div className="d-flex justify-content-between align-items-center">
-            <h5 className="fw-bold txt-primary">Total</h5>
-            <h4 className="fw-bold">IDR 9.850.000</h4>
+            <h5 style={titleStyle}>Total</h5>
+            <h4 style={headingStyle}>IDR 9.850.000</h4>
           </div>
         </Col>
       </Row>
