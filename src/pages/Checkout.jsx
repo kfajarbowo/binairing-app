@@ -10,6 +10,7 @@ import {
 import DataPemesan from "../components/DataPemesan";
 import DataPenumpang from "../components/DataPenumpang";
 import logoMaskapai from "../assets/logoMaskapai.png";
+import { Link } from "react-router-dom";
 
 const Checkout = () => {
   // properti CSS untuk Heading

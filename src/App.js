@@ -13,7 +13,6 @@ import Payment from './pages/Payment';
 import PaymentSuccess from './pages/PaymentSuccess';
 import Profile from './pages/Profile';
 
-
 function App() {
 	return (
 		<BrowserRouter>
@@ -24,15 +23,12 @@ function App() {
 				<Route path="/register" element={<Register />} />
 				<Route path="/resetpassword" element={<ResetPassword />} />
 				<Route path="/search" element={<Search />} />
-
 				<Route path="/checkout" element={<Checkout />} />
 				<Route path="/notification" element={<Notification />} />
 				<Route path="/riwayat-pemesanan" element={<History />} />
 				<Route path="/payment" element={<Payment />} />
 				<Route path="/payment-success" element={<PaymentSuccess />} />
 				<Route path="/profile" element={<Profile />} />
-
-
 			</Routes>
 		</BrowserRouter>
 	);
