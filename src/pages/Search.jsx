@@ -31,12 +31,18 @@ function Search() {
       </Row>
       <Row>
         <Col md={8}>
-          <Button className="w-100" style={{ background: "#A06ECE", border: "none" }}>
+          <Button
+            className="w-100"
+            style={{ background: "#A06ECE", border: "none" }}
+          >
             JKT MLB - 2 Penumpang - Economy
           </Button>
         </Col>
         <Col md={4}>
-          <Button className="w-100" style={{ background: "#73CA5C", border: "none" }}>
+          <Button
+            className="w-100"
+            style={{ background: "#73CA5C", border: "none" }}
+          >
             Ubah Pencarian
           </Button>
         </Col>
@@ -204,6 +210,7 @@ function Search() {
             </Card.Body>
           </Card>
         </Col>
+
         <Col sm={8}>
           {" "}
           <Card
@@ -276,7 +283,6 @@ function Search() {
                 <div>
                   <hr />
                   <div>
-                    
                     {/* Import Detail */}
                     <Col>
                       <div className="mt-3">
