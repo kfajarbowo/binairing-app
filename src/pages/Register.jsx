@@ -5,6 +5,22 @@ import { Link } from "react-router-dom";
 import { BsFillEyeSlashFill, BsFillEyeFill } from "react-icons/bs";
 
 const Register = () => {
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
+  const [password, setPassword] = useState("");
+
+  const handleRegister = (e) => {
+    e.preventDefault();
+
+    console.log({
+      name,
+      email,
+      phone,
+      password,
+    });
+  };
+
   //Fungsi untuk show password
   const [showPassword, setShowPassword] = useState(false);
   const togglePasswordVisibility = () => {
@@ -59,7 +75,7 @@ const Register = () => {
             <h3 className="mb-3" style={headingStyle}>
               Register
             </h3>
-            <Form>
+            <Form onSubmit={handleRegister}>
               {/* Input Nama */}
               <Form.Group className="mb-3">
                 <Form.Label style={labelStyle}>Nama</Form.Label>
@@ -67,6 +83,8 @@ const Register = () => {
                   type="text"
                   placeholder="Nama lengkap"
                   style={placeholderStyle}
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
                 />
               </Form.Group>
 
@@ -77,6 +95,8 @@ const Register = () => {
                   type="email"
                   placeholder="Contoh: johndoe@gmail.com"
                   style={placeholderStyle}
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
                 />
               </Form.Group>
 
@@ -87,6 +107,8 @@ const Register = () => {
                   type="text"
                   placeholder="+62"
                   style={placeholderStyle}
+                  value={phone}
+                  onChange={(e) => setPhone(e.target.value)}
                 />
               </Form.Group>
 
@@ -98,6 +120,8 @@ const Register = () => {
                     type={showPassword ? "text" : "password"}
                     placeholder="Buat password"
                     style={placeholderStyle}
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
                   />
                   <InputGroup.Text onClick={togglePasswordVisibility}>
                     {showPassword ? <BsFillEyeSlashFill /> : <BsFillEyeFill />}
