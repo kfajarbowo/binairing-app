@@ -12,25 +12,67 @@ import History from './pages/History';
 import Payment from './pages/Payment';
 import PaymentSuccess from './pages/PaymentSuccess';
 import Profile from './pages/Profile';
+import { Provider } from 'react-redux';
+import store from './redux/store';
+import RedirectIfProtected from './components/RedirectIfProtected';
+import Protected from './components/Protected';
 
 function App() {
 	return (
-		<BrowserRouter>
-			<Header />
-			<Routes>
-				<Route path="/" element={<Home />} />
-				<Route path="/login" element={<Login />} />
-				<Route path="/register" element={<Register />} />
-				<Route path="/resetpassword" element={<ResetPassword />} />
-				<Route path="/search" element={<Search />} />
-				<Route path="/checkout" element={<Checkout />} />
-				<Route path="/notification" element={<Notification />} />
-				<Route path="/riwayat-pemesanan" element={<History />} />
-				<Route path="/payment" element={<Payment />} />
-				<Route path="/payment-success" element={<PaymentSuccess />} />
-				<Route path="/profile" element={<Profile />} />
-			</Routes>
-		</BrowserRouter>
+		<Provider store={store}>
+			<BrowserRouter>
+				<Header />
+				<Routes>
+					<Route path="/" element={<Home />} />
+					<Route
+						path="/login"
+						element={
+							<RedirectIfProtected>
+								<Login />
+							</RedirectIfProtected>
+						}
+					/>
+					<Route path="/register" element={<Register />} />
+					<Route path="/resetpassword" element={<ResetPassword />} />
+					<Route path="/search" element={<Search />} />
+					<Route
+						path="/checkout"
+						element={
+							<Protected>
+								<Checkout />
+							</Protected>
+						}
+					/>
+					<Route
+						path="/notification"
+						element={
+							<Protected>
+								<Notification />
+							</Protected>
+						}
+					/>
+					<Route
+						path="/riwayat-pemesanan"
+						element={
+							<Protected>
+								<History />
+							</Protected>
+						}
+					/>
+					<Route path="/payment" element={<Payment />} />
+					<Route path="/payment-success" element={<PaymentSuccess />} />
+
+					<Route
+						path="/profile"
+						element={
+							<Protected>
+								<Profile />
+							</Protected>
+						}
+					/>
+				</Routes>
+			</BrowserRouter>
+		</Provider>
 	);
 }
 
