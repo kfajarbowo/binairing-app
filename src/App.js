@@ -16,6 +16,7 @@ import { Provider } from 'react-redux';
 import store from './redux/store';
 import RedirectIfProtected from './components/RedirectIfProtected';
 import Protected from './components/Protected';
+import Ticket from './pages/Ticket';
 
 function App() {
 	return (
@@ -70,6 +71,7 @@ function App() {
 							</Protected>
 						}
 					/>
+					<Route path="/ticket" element={<Ticket />} />
 				</Routes>
 			</BrowserRouter>
 		</Provider>
