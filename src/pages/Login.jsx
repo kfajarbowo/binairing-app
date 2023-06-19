@@ -1,5 +1,13 @@
 import React, { useState } from 'react';
-import { Button, Col, Container, Form, InputGroup, Row } from 'react-bootstrap';
+import {
+	Alert,
+	Button,
+	Col,
+	Container,
+	Form,
+	InputGroup,
+	Row,
+} from 'react-bootstrap';
 import background from '../assets/background.png';
 import { Link, useNavigate } from 'react-router-dom';
 import { BsFillEyeSlashFill, BsFillEyeFill } from 'react-icons/bs';
@@ -60,6 +68,15 @@ const Login = () => {
 		fontSize: 'var(--body-font-14)',
 	};
 
+	// properti CSS untuk button
+	const alertStyle = {
+		fontSize: 'var(--body-font-14)',
+		backgroundColor: 'var(--error)',
+		color: 'white',
+		border: 'none',
+		textAlign: 'center',
+	};
+
 	return (
 		<Container fluid>
 			<Row>
@@ -86,8 +103,9 @@ const Login = () => {
 						<Form onSubmit={onSubmit}>
 							{/* Input Email */}
 							<Form.Group className="mb-3" controlId="formBasicEmail">
-								<Form.Label style={labelStyle}>Email/No Telepon</Form.Label>
+								<Form.Label style={labelStyle}>Email</Form.Label>
 								<Form.Control
+									required
 									type="email"
 									value={email}
 									onChange={e => setEmail(e.target.value)}
@@ -108,6 +126,7 @@ const Login = () => {
 								</div>
 								<InputGroup className="mb-3">
 									<Form.Control
+										required
 										type={showPassword ? 'text' : 'password'}
 										value={password}
 										onChange={e => setPassword(e.target.value)}

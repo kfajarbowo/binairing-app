@@ -73,7 +73,7 @@ const Checkout = () => {
 
       {/* Alert */}
       <Row>
-        <Alert className="text-center bg-danger text-light border-0">
+        <Alert className="text-center bg-danger text-light border-0 py-2">
           Selesaikan dalam 00:15:00
         </Alert>
       </Row>
