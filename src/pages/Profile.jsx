@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import {
 	Button,
 	Card,
@@ -9,9 +9,22 @@ import {
 	Form,
 } from 'react-bootstrap';
 import { FiArrowLeft, FiEdit3, FiLogOut, FiSettings } from 'react-icons/fi';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { logout, getProfile } from '../redux/action/auth';
 
 const Profile = () => {
+	const dispatch = useDispatch();
+	const navigate = useNavigate();
+
+	const { isLoggedIn, token, user } = useSelector(state => state.authTable);
+
+	useEffect(() => {
+		if (isLoggedIn && token) {
+			dispatch(getProfile());
+		}
+	}, [dispatch, isLoggedIn, token]);
+
 	const linkStyle = {
 		color: 'var(--Neutral--05)',
 		textDecoration: 'none',
@@ -50,9 +63,11 @@ const Profile = () => {
 						md={{ span: 10, offset: 1 }}
 						style={{ backgroundColor: 'var(--darkblue-03)' }}
 					>
-						<Button className="p-3" style={buttonBeranda}>
-							<FiArrowLeft className="me-2" /> Beranda
-						</Button>
+						<Link to="/">
+							<Button className="p-3" style={buttonBeranda}>
+								<FiArrowLeft className="me-2" /> Beranda
+							</Button>
+						</Link>
 					</Col>
 				</Row>
 			</Container>
@@ -76,7 +91,10 @@ const Profile = () => {
 								</Link>
 							</ListGroup.Item>
 							<ListGroup.Item action className="mt-4 border-bottom pb-3">
-								<Link to={'/'} style={linkStyle}>
+								<Link
+									onClick={() => dispatch(logout(navigate()))}
+									style={linkStyle}
+								>
 									<FiLogOut className="me-3" />
 									Keluar
 								</Link>
@@ -102,7 +120,7 @@ const Profile = () => {
 											>
 												Username
 											</Form.Label>
-											<Form.Control type="text" placeholder="jojo" />
+											<Form.Control type="text" value={user?.name} />
 										</Form.Group>
 										<Form.Group className="mb-3" controlId="formBasicEmail">
 											<Form.Label
@@ -111,7 +129,7 @@ const Profile = () => {
 											>
 												Email address
 											</Form.Label>
-											<Form.Control type="email" placeholder="Jojo@gmail.com" />
+											<Form.Control type="email" value={user?.email} />
 										</Form.Group>
 										<div className="text-center">
 											<Button
