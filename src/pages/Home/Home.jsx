@@ -27,8 +27,19 @@ import "daterangepicker/daterangepicker.css";
 import $ from "jquery";
 import "daterangepicker";
 import { Link } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { getCity } from "../../redux/action/city";
 
 const Home = () => {
+  //get CITY
+  const dispatch = useDispatch();
+  const { city } = useSelector((state) => state.cityTable);
+
+  console.log(city);
+
+  useEffect(() => {
+    dispatch(getCity());
+  }, [dispatch]);
   // -------------------------- DATE PICKER-----------------------
   // Refs for input elements
   const departureInputRef = useRef();
@@ -41,7 +52,7 @@ const Home = () => {
     // Initialize date picker for departure date
     const departurePicker = $(departureInputRef.current).daterangepicker(
       {
-        // Configuration options for departure date picker
+        minDate: new Date(), // Configuration options for departure date picker
       },
       (start, end) => {
         const range =
@@ -54,7 +65,7 @@ const Home = () => {
     // Initialize date picker for return date
     const returnPicker = $(returnInputRef.current).daterangepicker(
       {
-        // Configuration options for return date picker
+        minDate: new Date(), // Configuration options for return date picker
       },
       (start, end) => {
         const range =
@@ -200,7 +211,9 @@ const Home = () => {
       <div className="row">
         <div className="col">
           <header className="d-flex justify-content-center mt-3">
-            <img src={banner} alt="Logo" className="img-fluid" />
+            <Link to="/">
+              <img src={banner} alt="Logo" className="img-fluid" />
+            </Link>
           </header>
         </div>
       </div>
@@ -321,7 +334,7 @@ const Home = () => {
                 </div>
               </div>
             </Card.Body>
-            <Link type="submit" className="btns-long">
+            <Link to="/search" className="btns-long">
               Cari Penerbangan
             </Link>
           </Card>
@@ -648,18 +661,21 @@ const Home = () => {
                   Limited
                 </button>
               </div>
-              <div className="card-body">
-                <h5 className="card-title">
-                  Jakarta
-                  <ArrowRightShort />
-                  Bangkok
-                </h5>
-                <span className="plane">AirAsia</span>
-                <span className="date">20 - 30 Maret 2023</span>
-                <span className="price">
-                  Mulai dari <span className="idr">IDR 950.000</span>
-                </span>
-              </div>
+              {city?.length > 0 &&
+                city.map((city) => (
+                  <div className="card-body" key={city?.idCity}>
+                    <h5 className="card-title">
+                      {city?.cityName}
+                      <ArrowRightShort />
+                      {city?.cityCode}
+                    </h5>
+                    <span className="plane">AirAsia</span>
+                    <span className="date">20 - 30 Maret 2023</span>
+                    <span className="price">
+                      Mulai dari <span className="idr">IDR 950.000</span>
+                    </span>
+                  </div>
+                ))}
             </div>
           </div>
           <div className="col-12 col-md">
