@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Button,
   Card,
@@ -14,19 +14,57 @@ import { AiOutlineHeart } from "react-icons/ai";
 import { FiDollarSign } from "react-icons/fi";
 import { FaAngleDown, FaAngleUp } from "react-icons/fa";
 import "./border.css";
-import logoMaskapai from "../assets/logoMaskapai.png";
+import { useDispatch, useSelector } from "react-redux";
+import { getJadwal } from "../redux/action/jadwal";
+import { useLocation } from "react-router-dom";
+import { getDetail } from "../redux/action/detail";
 
 function Search() {
+  //get detail
+  const location = useLocation();
+  const searchParams = new URLSearchParams(location.search);
+  const from = searchParams.get("from");
+  const to = searchParams.get("to");
+  const dewasa = searchParams.get("dewasa");
+  const bayi = searchParams.get("bayi");
+  const kelas = searchParams.get("kelas");
+  const kelas_name = searchParams.get("kelas_name");
+  const tgl_barangkat = searchParams.get("tgl_barangkat");
   const [showTermurahOptions, setShowTermurahOptions] = React.useState(false);
+
+  const dispatch = useDispatch();
+  const { detail } = useSelector((state) => state.detailTable);
+
+  useEffect(() => {
+    dispatch(getDetail(from, to, kelas, tgl_barangkat));
+  }, [dispatch]);
 
   const toggleTermurahOptions = () => {
     setShowTermurahOptions(!showTermurahOptions);
   };
   const [buka, setBuka] = useState(false);
 
+  function convertTime(timeString) {
+    const time = new Date(`1970-01-01T${timeString}`);
+    const formattedTime = time.toLocaleTimeString("en-US", {
+      hour: "numeric",
+      minute: "2-digit",
+      hour12: false,
+    });
+
+    return formattedTime;
+  }
+
+  function formatDate(dateString) {
+    const date = new Date(dateString);
+    const options = { day: "numeric", month: "long", year: "numeric" };
+    const formattedDate = date.toLocaleDateString("id-ID", options);
+    return formattedDate;
+  }
+
   return (
     <Container>
-      <Row>
+      <Row className="mt-5">
         <h3>Pilih Penerbangan</h3>
       </Row>
       <Row>
@@ -35,7 +73,8 @@ function Search() {
             className="w-100"
             style={{ background: "#A06ECE", border: "none" }}
           >
-            JKT MLB - 2 Penumpang - Economy
+            {from} {to} - {parseInt(dewasa) + parseInt(bayi)} Penumpang -{" "}
+            {kelas_name}
           </Button>
         </Col>
         <Col md={4}>
@@ -187,175 +226,239 @@ function Search() {
       </Col>
 
       {/* Filters */}
-      <Row className="mt-3">
-        <Col sm={4}>
-          <Card>
-            <Card.Body>
-              <h5>Filters</h5>
+      {detail ? (
+        <Row className="mt-3">
+          <Col sm={4}>
+            <Card>
+              <Card.Body>
+                <h5>Filters</h5>
 
-              <h6>
-                <BsBox /> Transit
-              </h6>
-              <hr />
-              <h6>
-                <AiOutlineHeart />
-                Fasilitas
-              </h6>
+                <h6>
+                  <BsBox /> Transit
+                </h6>
+                <hr />
+                <h6>
+                  <AiOutlineHeart />
+                  Fasilitas
+                </h6>
 
-              <hr />
-              <h6>
-                <FiDollarSign />
-                Harga
-              </h6>
-            </Card.Body>
-          </Card>
-        </Col>
-
-        <Col sm={8}>
-          {" "}
-          <Card
-            className={`pb-2 rounded-3 shadow border-1 ${
-              buka ? "border-custom" : ""
-            }`}
-          >
-            <Card.Body>
-              <div className="pb-3 d-flex justify-content-between align-items-start">
-                <img src={logoMaskapai} alt="" />
-                <p className="ps-3 m-0">Jet Air - Economy</p>
-                <Col></Col>
-                <Button
-                  className="border-0 p-0 m-0"
-                  onClick={() => setBuka(!buka)}
-                  style={{ background: "none" }}
-                >
-                  {buka ? (
-                    <FaAngleUp size={20} color="black" />
-                  ) : (
-                    <FaAngleDown size={20} color="black" />
-                  )}
-                </Button>
-              </div>
-              <Row>
-                <Col className="pe-0 d-grid justify-content-center align-content-center">
-                  <b>07:00</b>
-                  <p className="fw-bold">JKT</p>
-                </Col>
-                <Col xs={6}>
-                  <p
-                    className="text-center mb-2 text-secondary text"
-                    style={{ fontSize: "12px" }}
-                  >
-                    4h 0m
+                <hr />
+                <h6>
+                  <FiDollarSign />
+                  Harga
+                </h6>
+              </Card.Body>
+            </Card>
+          </Col>
+          <Col sm={8}>
+            <Card
+              className={`pb-2 mb-5 mb-md-5 rounded-3 shadow border-1 ${
+                buka ? "border-custom" : ""
+              }`}
+            >
+              <Card.Body>
+                <div className="pb-3 d-flex justify-content-between align-items-start">
+                  <img
+                    src={detail?.maskapai?.logoMaskapai}
+                    alt=""
+                    width="25"
+                    height="25"
+                  />
+                  <p className="ps-3 m-0">
+                    {detail?.maskapai?.namaMaskapai}- {kelas_name}
                   </p>
-                  <hr className="m-2" />
-                  <p
-                    className="text-center text-secondary"
-                    style={{ fontSize: "12px" }}
-                  >
-                    Direct
-                  </p>
-                </Col>
-                <Col className="pe-0 d-grid justify-content-center align-content-center">
-                  <b>11:00</b>
-                  <p className="fw-bold">MLB</p>
-                </Col>
-                <Col className="d-grid justify-content-end align-content-center">
-                  <h1
-                    className="fw-bold"
-                    style={{
-                      fontSize: "16px",
-                      color: "#7126B5",
-                    }}
-                  >
-                    IDR 4.900.000
-                  </h1>
+                  <Col></Col>
                   <Button
-                    className="rounded-3 border-0 ms-3 fs-6 "
-                    style={{
-                      backgroundColor: "#7126B5",
-                    }}
+                    className="border-0 p-0 m-0"
+                    onClick={() => setBuka(!buka)}
+                    style={{ background: "none" }}
                   >
-                    Pilih
+                    {buka ? (
+                      <FaAngleUp size={20} color="black" />
+                    ) : (
+                      <FaAngleDown size={20} color="black" />
+                    )}
                   </Button>
-                </Col>
-              </Row>
-              <Collapse in={buka}>
-                <div>
-                  <hr />
-                  <div>
-                    {/* Import Detail */}
-                    <Col>
-                      <div className="mt-3">
-                        <h5 className="fw-bold">Detail Penerbangan</h5>
-                        <div className="d-flex justify-content-between align-items-center">
-                          <h5 className="fw-bold">07:00</h5>
-                          <h6 className="fw-bold">Keberangkatan</h6>
-                        </div>
-                        <p className="mb-0">3 Maret 2023</p>
-                        <p>Soekarno Hatta - Terminal 1A Domestik</p>
-                      </div>
-
-                      <hr />
-
-                      <Row className="d-flex align-items-center">
-                        <Col md={1}>
-                          <img src={logoMaskapai} alt="" />
-                        </Col>
-                        <Col md="auto">
-                          <h6 className="fw-bold">Jet Air - Economy</h6>
-                          <h6 className="fw-bold mb-4">JT - 203</h6>
-                          <h6 className="fw-bold">Informasi:</h6>
-                          <p className="mb-0">Baggage 20kg</p>
-                          <p className="mb-0">Cabin baggage 7 kg</p>
-                          <p>In Flight Entertainment</p>
-                        </Col>
-                      </Row>
-
-                      <hr />
-
-                      <div>
-                        <div className="d-flex justify-content-between align-items-center">
-                          <h5 className="fw-bold">11:00</h5>
-                          <h6 className="fw-bold">Kedatangan</h6>
-                        </div>
-                        <p className="mb-0">3 Maret 2023</p>
-                        <p className="fw-bold">
-                          Melbourne International Airport
-                        </p>
-                      </div>
-
-                      <hr />
-
-                      <div>
-                        <h5 className="fw-bold">Rincian Harga</h5>
-                        <div className="d-flex justify-content-between align-items-center">
-                          <p>2 Adults</p>
-                          <p>IDR 9.550.000</p>
-                        </div>
-                        <div className="d-flex justify-content-between align-items-center">
-                          <p>1 Baby</p>
-                          <p>IDR 0</p>
-                        </div>
-                        <div className="d-flex justify-content-between align-items-center">
-                          <p>Tax</p>
-                          <p>IDR 300.000</p>
-                        </div>
-                      </div>
-
-                      <hr />
-
-                      <div className="d-flex justify-content-between align-items-center">
-                        <h5 className="fw-bold txt-primary">Total</h5>
-                        <h4 className="fw-bold">IDR 9.850.000</h4>
-                      </div>
-                    </Col>
-                  </div>
                 </div>
-              </Collapse>
-            </Card.Body>
-          </Card>
-        </Col>
-      </Row>
+                <Row>
+                  <Col className="pe-0 d-grid justify-content-center align-content-center">
+                    <b>{convertTime(detail?.jamKeberangkatan)}</b>
+                    <p className="fw-bold">
+                      {detail?.kotaKeberangkatan?.cityCode}
+                    </p>
+                  </Col>
+                  <Col xs={6}>
+                    <p
+                      className="text-center mb-2 text-secondary text"
+                      style={{ fontSize: "12px" }}
+                    >
+                      {detail?.durasiJam}h {detail?.durasiMenit}m
+                    </p>
+                    <hr className="m-2" />
+                    <p
+                      className="text-center text-secondary"
+                      style={{ fontSize: "12px" }}
+                    >
+                      Direct
+                    </p>
+                  </Col>
+                  <Col className="pe-0 d-grid justify-content-center align-content-center">
+                    <b>{convertTime(detail?.jamKedatangan)}</b>
+                    <p className="fw-bold">
+                      {detail?.kotaKedatangan?.cityCode}
+                    </p>
+                  </Col>
+                  <Col className="d-grid justify-content-end align-content-center">
+                    <h1
+                      className="fw-bold"
+                      style={{
+                        fontSize: "16px",
+                        color: "#7126B5",
+                      }}
+                    >
+                      IDR {detail?.hargaTiket?.toLocaleString("id-ID")}
+                    </h1>
+                    <Button
+                      className="rounded-3 border-0 ms-3 fs-6 "
+                      style={{
+                        backgroundColor: "#7126B5",
+                      }}
+                    >
+                      Pilih
+                    </Button>
+                  </Col>
+                </Row>
+                <Collapse in={buka}>
+                  <div>
+                    <hr />
+                    <div>
+                      {/* Import Detail */}
+                      <Col>
+                        <div className="mt-3">
+                          <h5 className="fw-bold">Detail Penerbangan</h5>
+                          <div className="d-flex justify-content-between align-items-center">
+                            <h5 className="fw-bold">
+                              {convertTime(detail?.jamKeberangkatan)}
+                            </h5>
+                            <h6 className="fw-bold">Keberangkatan</h6>
+                          </div>
+                          <p className="mb-0">
+                            {formatDate(detail?.tglKeberangkatan)}
+                          </p>
+                          <p>
+                            {detail?.kotaKeberangkatan?.cityName} -{" "}
+                            {detail?.kotaKeberangkatan?.cityAirport}
+                          </p>
+                        </div>
+
+                        <hr />
+
+                        <Row className="d-flex align-items-center">
+                          <Col md={1}>
+                            <img
+                              src={detail?.maskapai?.logoMaskapai}
+                              alt=""
+                              width="25"
+                              height="25"
+                            />
+                          </Col>
+                          <Col md="auto">
+                            <h6 className="fw-bold">
+                              {detail?.maskapai?.namaMaskapai}- {kelas_name}
+                            </h6>
+                            <h6 className="fw-bold mb-4">
+                              {detail?.maskapai?.kodeMaskapai}
+                            </h6>
+                            <h6 className="fw-bold">Informasi:</h6>
+                            <p className="mb-0">Baggage 20kg</p>
+                            <p className="mb-0">Cabin baggage 7 kg</p>
+                            <p>In Flight Entertainment</p>
+                          </Col>
+                        </Row>
+
+                        <hr />
+
+                        <div>
+                          <div className="d-flex justify-content-between align-items-center">
+                            <h5 className="fw-bold">
+                              {convertTime(detail?.jamKedatangan)}
+                            </h5>
+                            <h6 className="fw-bold">Kedatangan</h6>
+                          </div>
+                          <p className="mb-0">
+                            {formatDate(detail?.tglKedatangan)}
+                          </p>
+                          <p>
+                            {detail?.kotaKedatangan?.cityName} -{" "}
+                            {detail.kotaKedatangan?.cityAirport}
+                          </p>
+                        </div>
+
+                        <hr />
+
+                        <div>
+                          <h5 className="fw-bold">Rincian Harga</h5>
+                          <div className="d-flex justify-content-between align-items-center">
+                            <p>{dewasa} Adults</p>
+                            <p>
+                              IDR{" "}
+                              {(
+                                parseInt(dewasa) * detail?.hargaTiket
+                              ).toLocaleString("id-ID")}
+                            </p>
+                          </div>
+                          <div className="d-flex justify-content-between align-items-center">
+                            <p>{bayi} Baby</p>
+                            <p>
+                              IDR{" "}
+                              {(
+                                parseInt(bayi) * detail?.hargaTiket
+                              ).toLocaleString("id-ID")}
+                            </p>
+                          </div>
+                          <div className="d-flex justify-content-between align-items-center">
+                            <p>Tax</p>
+                            <p>
+                              IDR{" "}
+                              {(
+                                (parseInt(dewasa) + parseInt(bayi)) *
+                                detail?.hargaTiket *
+                                0.11
+                              ).toLocaleString("id-ID")}
+                            </p>
+                          </div>
+                        </div>
+
+                        <hr />
+
+                        <div className="d-flex justify-content-between align-items-center mb-0">
+                          <h5 className="fw-bold txt-primary">Total</h5>
+                          <h4 className="fw-bold">
+                            IDR{" "}
+                            {(
+                              (parseInt(dewasa) + parseInt(bayi)) *
+                              detail?.hargaTiket *
+                              1.11
+                            ).toLocaleString("id-ID")}
+                          </h4>
+                        </div>
+                      </Col>
+                    </div>
+                  </div>
+                </Collapse>
+              </Card.Body>
+            </Card>
+          </Col>
+        </Row>
+      ) : (
+        <Row className="mt-3">
+          <Col sm={8}>
+            <Card className="text-center py-5">
+              <h4>No Items</h4>
+            </Card>
+          </Col>
+        </Row>
+      )}
     </Container>
   );
 }
