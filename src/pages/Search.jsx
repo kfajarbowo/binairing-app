@@ -18,6 +18,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { getJadwal } from "../redux/action/jadwal";
 import { useLocation } from "react-router-dom";
 import { getDetail } from "../redux/action/detail";
+import empty from "../assets/empty.png";
 
 function Search() {
   //get detail
@@ -65,7 +66,7 @@ function Search() {
   return (
     <Container>
       <Row className="mt-5">
-        <h3>Pilih Penerbangan</h3>
+        <h5 className="fw-bold mb-3">Pilih Penerbangan</h5>
       </Row>
       <Row>
         <Col md={8}>
@@ -102,12 +103,14 @@ function Search() {
           <Card>
             <Card.Body
               className="card-hover"
-              style={{ backgroundColor: "#B35ED6", cursor: "pointer" }}
+              style={{
+                backgroundColor: "#B35ED6",
+                cursor: "default",
+                color: "white",
+              }}
             >
               <Card.Title>Rabu</Card.Title>
-              <Card.Subtitle className="mb-2 text-muted">
-                02/03/2023
-              </Card.Subtitle>
+              <Card.Subtitle className="mb-2">02/03/2023</Card.Subtitle>
             </Card.Body>
           </Card>
         </Col>
@@ -115,12 +118,14 @@ function Search() {
           <Card>
             <Card.Body
               className="card-hover"
-              style={{ backgroundColor: "#6F1F8F", cursor: "pointer" }}
+              style={{
+                backgroundColor: "#6F1F8F",
+                cursor: "pointer",
+                color: "white",
+              }}
             >
               <Card.Title>Kamis</Card.Title>
-              <Card.Subtitle className="mb-2 text-muted">
-                03/03/2023
-              </Card.Subtitle>
+              <Card.Subtitle className="mb-2">03/03/2023</Card.Subtitle>
             </Card.Body>
           </Card>
         </Col>
@@ -451,10 +456,10 @@ function Search() {
           </Col>
         </Row>
       ) : (
-        <Row className="mt-3">
-          <Col sm={8}>
-            <Card className="text-center py-5">
-              <h4>No Items</h4>
+        <Row className="my-3">
+          <Col className="d-flex align-items-center justify-content-center">
+            <Card className="text-center py-5 px-5 w-50">
+              <img src={empty} alt="Hasil pencarian tidak ditemukan!" />
             </Card>
           </Col>
         </Row>
