@@ -14,8 +14,6 @@ const Home = () => {
   const dispatch = useDispatch();
   const { promo } = useSelector((state) => state.promoTable);
 
-  console.log(promo);
-
   useEffect(() => {
     dispatch(getPromo());
   }, [dispatch]);
@@ -66,7 +64,7 @@ const Home = () => {
       {/* Header */}
       <div className="row">
         <div className="col">
-          <header className="d-flex justify-content-center mt-3">
+          <header className="d-flex justify-content-center mt-3 mb-3">
             <Link to="/">
               <img src={banner} alt="Logo" className="img-fluid" />
             </Link>
@@ -79,7 +77,7 @@ const Home = () => {
 
       {/* Destination section */}
       <div className="destination">
-        <h5 className="mt-5 mb-3">Destinasi favorit</h5>
+        <h5 className="mt-5 mb-3 fw-bold">Destinasi favorit</h5>
         <div className="d-flex flex-wrap justify-content-start ms-2">
           <button
             className={`btns-country${
@@ -87,7 +85,7 @@ const Home = () => {
             } mx-1 my-1`}
             onClick={() => handleButtonClick(0)}
           >
-            <Search /> All Country
+            <Search /> Semua Destinasi
           </button>
           <button
             className={`btns-country${

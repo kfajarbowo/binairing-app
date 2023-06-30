@@ -17,6 +17,8 @@ import store from './redux/store';
 import RedirectIfProtected from './components/RedirectIfProtected';
 import Protected from './components/Protected';
 import Ticket from './pages/Ticket';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 function App() {
 	return (
@@ -73,6 +75,7 @@ function App() {
 					/>
 					<Route path="/ticket" element={<Ticket />} />
 				</Routes>
+				<ToastContainer />
 			</BrowserRouter>
 		</Provider>
 	);
