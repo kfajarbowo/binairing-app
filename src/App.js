@@ -58,10 +58,19 @@ function App() {
 						path="/riwayat-pemesanan"
 						element={
 							<Protected>
-								<History />
+								<History key="/riwayat-pemesanan" />
 							</Protected>
 						}
 					/>
+					<Route
+						path="/riwayat-pemesanan/:bookingId"
+						element={
+							<Protected>
+								<History key="/riwayat-pemesanan/:bookingId" />
+							</Protected>
+						}
+					/>
+
 					<Route path="/payment" element={<Payment />} />
 					<Route path="/payment-success" element={<PaymentSuccess />} />
 
