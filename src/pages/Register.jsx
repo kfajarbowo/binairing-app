@@ -1,24 +1,27 @@
 import React, { useState } from "react";
 import { Button, Col, Container, Form, InputGroup, Row } from "react-bootstrap";
 import background from "../assets/background.png";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { BsFillEyeSlashFill, BsFillEyeFill } from "react-icons/bs";
+import { useDispatch } from "react-redux";
+import { register } from "../redux/action/auth";
 
 const Register = () => {
-  const [name, setName] = useState("");
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
-  const [phone, setPhone] = useState("");
   const [password, setPassword] = useState("");
+  const [phoneNum, setPhonenum] = useState("");
+  const [fullName, setFullName] = useState("");
 
   const handleRegister = (e) => {
     e.preventDefault();
 
-    console.log({
-      name,
-      email,
-      phone,
-      password,
-    });
+    const data = { username, email, password, phoneNum, fullName };
+
+    dispatch(register(data, navigate));
   };
 
   //Fungsi untuk show password
@@ -76,15 +79,27 @@ const Register = () => {
               Register
             </h3>
             <Form onSubmit={handleRegister}>
-              {/* Input Nama */}
+              {/* Input Nama Lengkap */}
               <Form.Group className="mb-3">
-                <Form.Label style={labelStyle}>Nama</Form.Label>
+                <Form.Label style={labelStyle}>Nama Lengkap</Form.Label>
                 <Form.Control
                   type="text"
-                  placeholder="Nama lengkap"
+                  placeholder="Masukkan nama lengkap Anda"
                   style={placeholderStyle}
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
+                  value={fullName}
+                  onChange={(e) => setFullName(e.target.value)}
+                />
+              </Form.Group>
+
+              {/* Input Username */}
+              <Form.Group className="mb-3">
+                <Form.Label style={labelStyle}>Username</Form.Label>
+                <Form.Control
+                  type="text"
+                  placeholder="Masukkan username Anda"
+                  style={placeholderStyle}
+                  value={username}
+                  onChange={(e) => setUsername(e.target.value)}
                 />
               </Form.Group>
 
@@ -107,8 +122,8 @@ const Register = () => {
                   type="text"
                   placeholder="+62"
                   style={placeholderStyle}
-                  value={phone}
-                  onChange={(e) => setPhone(e.target.value)}
+                  value={phoneNum}
+                  onChange={(e) => setPhonenum(e.target.value)}
                 />
               </Form.Group>
 

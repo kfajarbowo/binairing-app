@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
 	Button,
 	Col,
@@ -11,9 +11,22 @@ import {
 import { BsArrowLeftShort, BsFunnel, BsSearch } from 'react-icons/bs';
 import HistoryCard from '../components/HistoryCard';
 import logoMaskapai from '../assets/logoMaskapai.png';
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { getHistory, getHistoryDetails } from '../redux/action/history';
 
 const History = () => {
+	const dispatch = useDispatch();
+	const { historyDetails } = useSelector(state => state.historyTable);
+	const { history } = useSelector(state => state.historyTable);
+	console.log(historyDetails);
+
+	const { bookingId } = useParams();
+
+	useEffect(() => {
+		dispatch(getHistoryDetails(bookingId));
+	}, [dispatch, bookingId]);
+
 	// properti CSS untuk Heading
 	const headingStyle = {
 		fontSize: 'var(--heading-font-20)',
@@ -67,6 +80,21 @@ const History = () => {
 		fontSize: 'var(--body-font-14)',
 	};
 
+	const issuedStyle = {
+		borderRadius: '1rem',
+		border: 'none',
+		backgroundColor: 'var(--success)',
+		fontSize: 'var(--body-font-14)',
+	};
+
+	// properti CSS untuk unpaid
+	const unpaidStyle = {
+		borderRadius: '1rem',
+		border: 'none',
+		backgroundColor: 'var(--error)',
+		fontSize: 'var(--body-font-14)',
+	};
+
 	//Function Modal Search
 	const [showSearch, setShowSearch] = useState(false);
 	const handleCloseSearch = () => setShowSearch(false);
@@ -76,6 +104,24 @@ const History = () => {
 	const [showFilter, setShowFilter] = useState(false);
 	const handleCloseFilter = () => setShowFilter(false);
 	const handleShowFilter = () => setShowFilter(true);
+
+	function convertTime(timeString) {
+		const time = new Date(`1970-01-01T${timeString}`);
+		const formattedTime = time.toLocaleTimeString('en-US', {
+			hour: 'numeric',
+			minute: '2-digit',
+			hour12: false,
+		});
+
+		return formattedTime;
+	}
+
+	function formatDate(dateString) {
+		const date = new Date(dateString);
+		const options = { day: 'numeric', month: 'long', year: 'numeric' };
+		const formattedDate = date.toLocaleDateString('id-ID', options);
+		return formattedDate;
+	}
 
 	return (
 		<Container className="mt-5">
@@ -126,107 +172,142 @@ const History = () => {
 				</Col>
 
 				{/* Kolom Kanan Riwayat Pesanan  */}
-				<Col>
-					<div className="mt-3">
-						<div className="d-flex align-items-center justify-content-between">
-							<h5 className="fw-bold" style={subheading2Style}>
-								Detail Penerbangan
+				{historyDetails && history ? (
+					<Col key={historyDetails.bookingId}>
+						<div className="mt-3">
+							<div className="d-flex align-items-center justify-content-between">
+								<h5 className="fw-bold" style={subheading2Style}>
+									Detail Penerbangan
+								</h5>
+								{historyDetails.paid ? (
+									<Button style={detailStyle}>Issued</Button>
+								) : (
+									<Button style={unpaidStyle}>Unpaid</Button>
+								)}
+							</div>
+							<h6 style={subheading2Style}>
+								Booking Code:
+								<span style={subheadingStyle}>
+									{' '}
+									{historyDetails?.bookingId}
+								</span>{' '}
+							</h6>
+							<div className="d-flex justify-content-between align-items-center">
+								<h6 style={titleStyle}>
+									{convertTime(historyDetails?.jadwal?.jamKeberangkatan)}
+								</h6>
+								<h6 style={subparagraphStyle}>Keberangkatan</h6>
+							</div>
+							<p className="mb-0" style={paragraphStyle}>
+								{formatDate(historyDetails.jadwal?.tglKeberangkatan)}
+							</p>
+							<p style={paragraphStyle} className="fw-bold">
+								{historyDetails.jadwal?.kotaKeberangkatan.cityAirport} -
+								Terminal 1A Domestik
+							</p>
+						</div>
+
+						<hr />
+
+						<Row className="d-flex align-items-center">
+							<Col md={1}>
+								<img
+									width={30}
+									src={historyDetails.jadwal?.maskapai?.logoMaskapai}
+									alt=""
+								/>
+							</Col>
+							<Col md="auto">
+								<h6 className="fw-bold" style={paragraphStyle}>
+									{historyDetails.jadwal?.maskapai?.namaMaskapai} -{' '}
+									{historyDetails.jadwal?.kelas?.namaKelas}
+								</h6>
+								<h6 className="fw-bold mb-4" style={paragraphStyle}>
+									{historyDetails.jadwal?.maskapai?.kodeMaskapai} - 203
+								</h6>
+								<h6 className="fw-bold" style={paragraphStyle}>
+									Informasi:
+								</h6>
+								<p className="mb-0" style={paragraphStyle}>
+									Penumpang 1: Mr. Harry Potter
+								</p>
+								<p style={paragraphStyle}>ID: 1234567</p>
+								<p className="mb-0" style={paragraphStyle}>
+									Penumpang 1: Miss Hermione
+								</p>
+								<p style={paragraphStyle}>ID: 789658</p>
+							</Col>
+						</Row>
+
+						<hr />
+
+						<div className="div">
+							<div className="d-flex justify-content-between align-items-center">
+								<h6 style={titleStyle}>
+									{convertTime(historyDetails?.jadwal?.jamKedatangan)}
+								</h6>
+								<h6 style={subparagraphStyle}>Kedatangan</h6>
+							</div>
+							<p className="mb-0" style={paragraphStyle}>
+								{formatDate(historyDetails.jadwal?.tglKedatangan)}
+							</p>
+							<p className="fw-bold" style={paragraphStyle}>
+								{historyDetails.jadwal?.kotaKedatangan.cityAirport} - Airport
+							</p>
+						</div>
+
+						<hr />
+
+						<div>
+							<h5 className="fw-bold" style={paragraphStyle}>
+								Rincian Harga
 							</h5>
-							<Button style={detailStyle}>Issued</Button>
+							<div className="d-flex justify-content-between align-items-center">
+								<p style={paragraphStyle}>
+									{historyDetails.jmlPenumpang} Adults
+								</p>
+								<p style={paragraphStyle}>IDR {historyDetails.totalHarga}</p>
+							</div>
+							<div className="d-flex justify-content-between align-items-center">
+								<p style={paragraphStyle}>1 Baby</p>
+								<p style={paragraphStyle}>IDR 0</p>
+							</div>
+							<div className="d-flex justify-content-between align-items-center">
+								<p style={paragraphStyle}>Tax</p>
+								<p style={paragraphStyle}>
+									IDR{' '}
+									{historyDetails.jadwal?.hargaTiket *
+										0.11 *
+										historyDetails.jmlPenumpang}
+								</p>
+							</div>
 						</div>
-						<h6 style={subheading2Style}>
-							Booking Code:
-							<span style={subheadingStyle}> 6723y2GHK</span>{' '}
-						</h6>
+
+						<hr />
+
 						<div className="d-flex justify-content-between align-items-center">
-							<h6 style={titleStyle}>19:10</h6>
-							<h6 style={subparagraphStyle}>Keberangkatan</h6>
+							<h5 style={titleStyle}>Total</h5>
+							<h4 style={subheadingStyle}>
+								IDR{' '}
+								{historyDetails.jadwal?.hargaTiket *
+									1.11 *
+									historyDetails.jmlPenumpang}
+							</h4>
 						</div>
-						<p className="mb-0" style={paragraphStyle}>
-							5 Maret 2023
-						</p>
-						<p style={paragraphStyle}>Soekarno Hatta - Terminal 1A Domestik</p>
-					</div>
 
-					<hr />
-
-					<Row className="d-flex align-items-center">
-						<Col md={1}>
-							<img src={logoMaskapai} alt="" />
-						</Col>
-						<Col md="auto">
-							<h6 className="fw-bold" style={paragraphStyle}>
-								Jet Air - Economy
-							</h6>
-							<h6 className="fw-bold mb-4" style={paragraphStyle}>
-								JT - 203
-							</h6>
-							<h6 className="fw-bold" style={paragraphStyle}>
-								Informasi:
-							</h6>
-							<p className="mb-0" style={paragraphStyle}>
-								Penumpang 1: Mr. Harry Potter
-							</p>
-							<p style={paragraphStyle}>ID: 1234567</p>
-							<p className="mb-0" style={paragraphStyle}>
-								Penumpang 1: Miss Hermione
-							</p>
-							<p style={paragraphStyle}>ID: 789658</p>
-						</Col>
-					</Row>
-
-					<hr />
-
-					<div className="div">
-						<div className="d-flex justify-content-between align-items-center">
-							<h6 style={titleStyle}>21:10</h6>
-							<h6 style={subparagraphStyle}>Kedatangan</h6>
-						</div>
-						<p className="mb-0" style={paragraphStyle}>
-							5 Maret 2023
-						</p>
-						<p className="fw-bold" style={paragraphStyle}>
-							Melbourne International Airport
-						</p>
-					</div>
-
-					<hr />
-
-					<div>
-						<h5 className="fw-bold" style={paragraphStyle}>
-							Rincian Harga
-						</h5>
-						<div className="d-flex justify-content-between align-items-center">
-							<p style={paragraphStyle}>2 Adults</p>
-							<p style={paragraphStyle}>IDR 9.550.000</p>
-						</div>
-						<div className="d-flex justify-content-between align-items-center">
-							<p style={paragraphStyle}>1 Baby</p>
-							<p style={paragraphStyle}>IDR 0</p>
-						</div>
-						<div className="d-flex justify-content-between align-items-center">
-							<p style={paragraphStyle}>Tax</p>
-							<p style={paragraphStyle}>IDR 300.000</p>
-						</div>
-					</div>
-
-					<hr />
-
-					<div className="d-flex justify-content-between align-items-center">
-						<h5 style={titleStyle}>Total</h5>
-						<h4 style={subheadingStyle}>IDR 9.850.000</h4>
-					</div>
-
-					<Button
-						as={Link}
-						to={'/ticket'}
-						type="submit"
-						style={buttonStyle}
-						className="my-4 w-100"
-					>
-						Cetak Tiket
-					</Button>
-				</Col>
+						<Button
+							as={Link}
+							to={'/ticket'}
+							type="submit"
+							style={buttonStyle}
+							className="my-4 w-100"
+						>
+							Cetak Tiket
+						</Button>
+					</Col>
+				) : (
+					'gaada'
+				)}
 			</Row>
 
 			{/* Modal for Search Feature */}
