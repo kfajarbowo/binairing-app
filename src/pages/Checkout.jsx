@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
   Alert,
   Breadcrumb,
@@ -10,7 +10,9 @@ import {
 import DataPemesan from "../components/DataPemesan";
 import DataPenumpang from "../components/DataPenumpang";
 import logoMaskapai from "../assets/logoMaskapai.png";
-import { Link } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { getBooking } from "../redux/action/checkout";
+import { useNavigate } from "react-router-dom";
 
 const Checkout = () => {
   // properti CSS untuk Heading
@@ -52,6 +54,36 @@ const Checkout = () => {
     fontSize: "var(--body-font-14)",
   };
 
+  // add me
+  const dispatch = useDispatch();
+  const { token } = useSelector((state) => state.authTable);
+  const { addBookingResult, getBookingResult } = useSelector(
+    (state) => state.bookingTable
+  );
+  const navigate = useNavigate();
+
+  // respon dari add booking
+  if (addBookingResult) {
+    localStorage.removeItem("bookingIds");
+    const bookingIds = addBookingResult.bookingId;
+    localStorage.setItem("bookingIds", JSON.stringify(bookingIds));
+  }
+
+  // mengambil nilai id booking
+  const getBookingIds = JSON.parse(localStorage.getItem("bookingIds"));
+
+  useEffect(() => {
+    dispatch(getBooking(token, getBookingIds));
+  }, [dispatch]);
+
+  const penumpang = Math.floor(
+    getBookingResult?.totalHarga / getBookingResult?.jadwal?.hargaTiket
+  );
+
+  const paymentHandle = () => {
+    navigate("/payment", { state: { getBookingIds } });
+  };
+
   return (
     <Container className="mt-5">
       {/* Breadcrumb */}
@@ -91,7 +123,12 @@ const Checkout = () => {
           <Row className="border py-4 px-4 mt-3">
             <DataPenumpang />
           </Row>
-          <Button type="submit" className="w-100 my-3" style={buttonStyle}>
+          <Button
+            type="submit"
+            className="w-100 my-3"
+            style={buttonStyle}
+            onClick={paymentHandle}
+          >
             Simpan
           </Button>
         </Col>
@@ -101,14 +138,17 @@ const Checkout = () => {
           <div className="mt-3">
             <h5 style={subheadingStyle}>Detail Penerbangan</h5>
             <div className="d-flex justify-content-between align-items-center">
-              <h5 style={titleStyle}>07:00</h5>
+              <h5 style={titleStyle}>
+                {getBookingResult?.jadwal?.jamKeberangkatan}
+              </h5>
               <h6 style={subparagraphStyle}>Keberangkatan</h6>
             </div>
             <p className="mb-0" style={paragraphStyle}>
-              3 Maret 2023
+              {getBookingResult?.jadwal?.tglKeberangkatan}
             </p>
             <p style={paragraphStyle} className="fw-medium">
-              Soekarno Hatta - Terminal 1A Domestik
+              {getBookingResult?.jadwal?.kotaKeberangkatan?.cityAirport} -
+              Terminal 1A Domestik
             </p>
           </div>
 
@@ -120,10 +160,11 @@ const Checkout = () => {
             </Col>
             <Col md="auto">
               <h6 style={paragraphStyle} className="fw-bold">
-                Jet Air - Economy
+                {getBookingResult?.jadwal?.maskapai?.namaMaskapai} -{" "}
+                {getBookingResult?.jadwal?.kelas?.namaKelas}
               </h6>
               <h6 className="fw-bold mb-4" style={paragraphStyle}>
-                JT - 203
+                {getBookingResult?.jadwal?.maskapai?.kodeMaskapai} - 203
               </h6>
               <h6 style={paragraphStyle} className="fw-bold">
                 Informasi:
@@ -143,15 +184,15 @@ const Checkout = () => {
           <div>
             <div className="d-flex justify-content-between align-items-center">
               <h5 className="fw-bold" style={titleStyle}>
-                11:00
+                {getBookingResult?.jadwal?.jamKedatangan}
               </h5>
               <h6 style={subparagraphStyle}>Kedatangan</h6>
             </div>
             <p className="mb-0" style={paragraphStyle}>
-              3 Maret 2023
+              {getBookingResult?.jadwal?.tglKedatangan}
             </p>
             <p className="fw-medium" style={paragraphStyle}>
-              Melbourne International Airport
+              {getBookingResult?.jadwal?.kotaKedatangan.cityName}
             </p>
           </div>
 
@@ -162,16 +203,10 @@ const Checkout = () => {
               Rincian Harga
             </h5>
             <div className="d-flex justify-content-between align-items-center">
-              <p style={paragraphStyle}>2 Adults</p>
-              <p style={paragraphStyle}>IDR 9.550.000</p>
-            </div>
-            <div className="d-flex justify-content-between align-items-center">
-              <p style={paragraphStyle}>1 Baby</p>
-              <p style={paragraphStyle}>IDR 0</p>
-            </div>
-            <div className="d-flex justify-content-between align-items-center">
-              <p style={paragraphStyle}>Tax</p>
-              <p style={paragraphStyle}>IDR 300.000</p>
+              <p style={paragraphStyle}>{penumpang} Penumpang</p>
+              <p style={paragraphStyle}>
+                IDR {getBookingResult?.jadwal?.hargaTiket}
+              </p>
             </div>
           </div>
 
@@ -179,7 +214,7 @@ const Checkout = () => {
 
           <div className="d-flex justify-content-between align-items-center">
             <h5 style={titleStyle}>Total</h5>
-            <h4 style={headingStyle}>IDR 9.850.000</h4>
+            <h4 style={headingStyle}>{getBookingResult?.totalHarga}</h4>
           </div>
         </Col>
       </Row>

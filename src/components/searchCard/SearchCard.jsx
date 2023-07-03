@@ -236,15 +236,16 @@ const SearchCard = () => {
 
   const handleButtonCariPenerimaanClick = () => {
     const [startDate, endDate] = selectedDateRange.split(" to ");
-    navigate(
-      `/search?from=${encodeURIComponent(from)}&to=${encodeURIComponent(
-        to
-      )}&tgl_barangkat=${startDate}&dewasa=${encodeURIComponent(
-        parseInt(inputValueDewasa) + parseInt(inputValueAnak)
-      )}&bayi=${encodeURIComponent(inputValueBayi)}&kelas=${encodeURIComponent(
-        kelas
-      )}&kelas_name=${encodeURIComponent(inputValue)}`
-    );
+    const url = `/search?from=${encodeURIComponent(
+      from
+    )}&to=${encodeURIComponent(
+      to
+    )}&tgl_barangkat=${startDate}&dewasa=${encodeURIComponent(
+      parseInt(inputValueDewasa) + parseInt(inputValueAnak)
+    )}&bayi=${encodeURIComponent(inputValueBayi)}&kelas=${encodeURIComponent(
+      kelas
+    )}&kelas_name=${encodeURIComponent(inputValue)}`;
+    navigate(url, { state: { totalCount } });
   };
 
   // ------------------------
@@ -253,6 +254,9 @@ const SearchCard = () => {
     setSelectedItemFrom(selectedItemTo);
     setSelectedItemTo(temp);
   };
+
+  // add me
+  // console.log(totalCount)
 
   return (
     <>

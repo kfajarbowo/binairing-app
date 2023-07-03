@@ -1,12 +1,10 @@
 import React from "react";
 import { Container } from "react-bootstrap";
+import { Link } from "react-router-dom";
 import {
   ArrowLeft,
   BellFill,
-  CheckCircleFill,
   Funnel,
-  FunnelFill,
-  RecordCircleFill,
   RecordFill,
   Search,
 } from "react-bootstrap-icons";
@@ -19,13 +17,15 @@ const Notification = () => {
       <div className="col-11 mx-auto align-items-center">
         <div className="row mt-3 mb-3">
           <div className="col-md-10">
-            <button
-              className="btns-notif btn-block w-100 d-flex align-items-center"
-              type="submit"
-            >
-              <ArrowLeft className="me-2" />
-              <span>Beranda</span>
-            </button>
+            <Link to="/" style={{ textDecoration: "none" }}>
+              <button
+                className="btns-notif btn-block w-100 d-flex align-items-center"
+                type="submit"
+              >
+                <ArrowLeft className="me-2" />
+                <span>Beranda</span>
+              </button>
+            </Link>
           </div>
           <div className="col-md-2 mt-3 mt-md-0 d-flex align-items-center">
             <button className="btns-outline-filter flex-grow-1" type="submit">

@@ -5,6 +5,8 @@ import jadwal from "./jadwal";
 import flight from "./flight";
 import promo from "./promotion";
 import detail from "./detail";
+import history from "./history";
+import booking from "./checkout";
 
 export default combineReducers({
   authTable: auth,
@@ -13,4 +15,6 @@ export default combineReducers({
   flightTable: flight,
   promoTable: promo,
   detailTable: detail,
+  historyTable: history,
+  bookingTable: booking,
 });
