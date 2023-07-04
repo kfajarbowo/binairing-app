@@ -10,6 +10,11 @@ import {
 import { Link } from 'react-router-dom';
 import ilustrasi from '../assets/ilustrasi.png';
 
+// add me
+import { useNavigate } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { useLocation } from 'react-router-dom';
+
 const PaymentSuccess = () => {
 	// properti CSS untuk Breadcrumb
 	const breadcrumbStyle = {
@@ -55,6 +60,19 @@ const PaymentSuccess = () => {
 		fontSize: 'var(--body-font-14)',
 		color: 'black',
 		fontWeight: 'var(--font-semi-bold)',
+	};
+
+	// add me
+	const navigate = useNavigate();
+	const dispatch = useDispatch();
+	const location = useLocation();
+
+	// get bookingid
+	const idBook = location.state.idBook;
+	console.log(`dari succes ${idBook}`);
+
+	const handleTicket = () => {
+		navigate('/ticket', { state: { idBook } });
 	};
 
 	return (
@@ -105,8 +123,9 @@ const PaymentSuccess = () => {
 							Transaksi Pembayaran Tiket sukses!
 						</p>
 						<Button
-							as={Link}
-							to={'/ticket'}
+							// as={Link}
+							// to={"/ticket"}
+							onClick={handleTicket}
 							className="my-3 w-50"
 							style={buttonPrimaryStyle}
 						>
