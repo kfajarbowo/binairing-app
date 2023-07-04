@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   Accordion,
   Alert,
@@ -13,6 +13,9 @@ import {
 import { Link } from "react-router-dom";
 import logoMaskapai from "../assets/logoMaskapai.png";
 import payment from "../assets/payment.png";
+import { useLocation, useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { addPayment } from "../redux/action/payment";
 
 const Payment = () => {
   // properti CSS untuk Breadcrumb
@@ -75,6 +78,34 @@ const Payment = () => {
     border: "none",
     fontSize: "var(--body-font-14)",
   };
+
+  // add me
+  const location = useLocation();
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const { token } = useSelector((state) => state.authTable);
+  const { getBookingResult } = useSelector((state) => state.bookingTable);
+  const penumpang = Math.floor(
+    getBookingResult?.totalHarga / getBookingResult?.jadwal?.hargaTiket
+  );
+
+  const [selectedPayment, setSelectedPayment] = useState(null);
+
+  const idBook = location.state.getBookingIds;
+  // mendapatkan value metode pembayaran yang dipilih
+  const handlePaymentSelection = (paymentMethod) => {
+    setSelectedPayment(paymentMethod);
+  };
+  console.log(idBook);
+  console.log(selectedPayment);
+
+  const handlePayment = () => {
+    dispatch(addPayment(token, idBook)).then(() => {
+      navigate("/payment-success", { state: { idBook } });
+    });
+  };
+
+  // console.log(location.state.getBookingIds)
 
   return (
     <Container className="mt-5">
@@ -139,7 +170,10 @@ const Payment = () => {
               </button>
             </Accordion.Item>
           </Accordion>
-          <Accordion className="border-0 mb-3">
+          <Accordion
+            className="border-0 mb-3"
+            onClick={() => handlePaymentSelection("credit card")}
+          >
             <Accordion.Item eventKey="2">
               <Accordion.Header>Credit Card</Accordion.Header>
               <Accordion.Body>
@@ -198,7 +232,12 @@ const Payment = () => {
               </Accordion.Body>
             </Accordion.Item>
           </Accordion>
-          <Button type="submit" className="w-100" style={buttonStyle}>
+          <Button
+            type="submit"
+            className="w-100"
+            style={buttonStyle}
+            onClick={handlePayment}
+          >
             Bayar
           </Button>
         </Col>
@@ -206,19 +245,19 @@ const Payment = () => {
         {/* Kolom kanan payment */}
         <Col className="mb-5">
           <div className="mt-3">
-            <h5 style={subheadingStyle}>
-              Booking Code:
-              <span style={headingStyle}> 6723y2GHK</span>
-            </h5>
+            <h5 style={subheadingStyle}>Detail Penerbangan</h5>
             <div className="d-flex justify-content-between align-items-center">
-              <h5 style={titleStyle}>07:00</h5>
+              <h5 style={titleStyle}>
+                {getBookingResult?.jadwal?.jamKeberangkatan}
+              </h5>
               <h6 style={subparagraphStyle}>Keberangkatan</h6>
             </div>
             <p className="mb-0" style={paragraphStyle}>
-              3 Maret 2023
+              {getBookingResult?.jadwal?.tglKeberangkatan}
             </p>
             <p style={paragraphStyle} className="fw-medium">
-              Soekarno Hatta - Terminal 1A Domestik
+              {getBookingResult?.jadwal?.kotaKeberangkatan?.cityAirport} -
+              Terminal 1A Domestik
             </p>
           </div>
 
@@ -230,10 +269,11 @@ const Payment = () => {
             </Col>
             <Col md="auto">
               <h6 style={paragraphStyle} className="fw-bold">
-                Jet Air - Economy
+                {getBookingResult?.jadwal?.maskapai?.namaMaskapai} -{" "}
+                {getBookingResult?.jadwal?.kelas?.namaKelas}
               </h6>
               <h6 className="fw-bold mb-4" style={paragraphStyle}>
-                JT - 203
+                {getBookingResult?.jadwal?.maskapai?.kodeMaskapai} - 203
               </h6>
               <h6 style={paragraphStyle} className="fw-bold">
                 Informasi:
@@ -253,15 +293,15 @@ const Payment = () => {
           <div>
             <div className="d-flex justify-content-between align-items-center">
               <h5 className="fw-bold" style={titleStyle}>
-                11:00
+                {getBookingResult?.jadwal?.jamKedatangan}
               </h5>
               <h6 style={subparagraphStyle}>Kedatangan</h6>
             </div>
             <p className="mb-0" style={paragraphStyle}>
-              3 Maret 2023
+              {getBookingResult?.jadwal?.tglKedatangan}
             </p>
             <p className="fw-medium" style={paragraphStyle}>
-              Melbourne International Airport
+              {getBookingResult?.jadwal?.kotaKedatangan.cityName}
             </p>
           </div>
 
@@ -272,16 +312,10 @@ const Payment = () => {
               Rincian Harga
             </h5>
             <div className="d-flex justify-content-between align-items-center">
-              <p style={paragraphStyle}>2 Adults</p>
-              <p style={paragraphStyle}>IDR 9.550.000</p>
-            </div>
-            <div className="d-flex justify-content-between align-items-center">
-              <p style={paragraphStyle}>1 Baby</p>
-              <p style={paragraphStyle}>IDR 0</p>
-            </div>
-            <div className="d-flex justify-content-between align-items-center">
-              <p style={paragraphStyle}>Tax</p>
-              <p style={paragraphStyle}>IDR 300.000</p>
+              <p style={paragraphStyle}>{penumpang} Penumpang</p>
+              <p style={paragraphStyle}>
+                IDR {getBookingResult?.jadwal?.hargaTiket}
+              </p>
             </div>
           </div>
 
@@ -289,7 +323,7 @@ const Payment = () => {
 
           <div className="d-flex justify-content-between align-items-center">
             <h5 style={titleStyle}>Total</h5>
-            <h4 style={headingStyle}>IDR 9.850.000</h4>
+            <h4 style={headingStyle}>{getBookingResult?.totalHarga}</h4>
           </div>
         </Col>
       </Row>

@@ -16,9 +16,12 @@ import { FaAngleDown, FaAngleUp } from "react-icons/fa";
 import "./border.css";
 import { useDispatch, useSelector } from "react-redux";
 import { getJadwal } from "../redux/action/jadwal";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { getDetail } from "../redux/action/detail";
 import empty from "../assets/empty.png";
+
+// add me
+import { addBooking } from "../redux/action/checkout";
 
 function Search() {
   //get detail
@@ -34,6 +37,7 @@ function Search() {
   const [showTermurahOptions, setShowTermurahOptions] = React.useState(false);
 
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const { detail } = useSelector((state) => state.detailTable);
 
   useEffect(() => {
@@ -62,6 +66,28 @@ function Search() {
     const formattedDate = date.toLocaleDateString("id-ID", options);
     return formattedDate;
   }
+
+  // add me
+  // console.log(location.state.totalCount)
+
+  const { token } = useSelector((state) => state.authTable);
+
+  const handleCheckout = (value) => {
+    const idJadwal = value.target.value;
+
+    const payloadCheckout = {
+      jadwal: {
+        idJadwal: idJadwal,
+      },
+      jmlPenumpang: location.state.totalCount,
+    };
+
+    dispatch(addBooking(payloadCheckout, token)).then(() => {
+      navigate("/checkout");
+    });
+  };
+
+  console.log(detail);
 
   return (
     <Container>
@@ -328,6 +354,8 @@ function Search() {
                       style={{
                         backgroundColor: "#7126B5",
                       }}
+                      value={detail?.idJadwal}
+                      onClick={handleCheckout}
                     >
                       Pilih
                     </Button>

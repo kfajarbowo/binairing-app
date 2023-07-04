@@ -6,7 +6,8 @@ import { Link, useNavigate } from "react-router-dom";
 import logo from "../../assets/tiketku.png";
 import { useDispatch, useSelector } from "react-redux";
 import { getProfile, logout } from "../../redux/action/auth";
-import { FiBell, FiList, FiUser } from "react-icons/fi";
+import { FiBell, FiUser } from "react-icons/fi";
+import { AiOutlineHistory } from "react-icons/ai";
 
 const Header = () => {
   const dispatch = useDispatch();
@@ -57,8 +58,8 @@ const Header = () => {
           <Nav>
             {isLoggedIn ? (
               <>
-                <Nav.Link as={Link} to={"/"}>
-                  <FiList />
+                <Nav.Link as={Link} to={"/riwayat-pemesanan"}>
+                  <AiOutlineHistory />
                 </Nav.Link>
 
                 <Nav.Link as={Link} to={"/notification"}>
