@@ -288,7 +288,10 @@ const History = () => {
 								Rincian Harga
 							</h5>
 							<div className="d-flex justify-content-between align-items-center">
-								<p style={paragraphStyle}>{penumpang} Penumpang</p>
+								<p style={paragraphStyle}>
+									{getAllBookingResult[selectedCardIndex]?.jmlPenumpang}{' '}
+									Penumpang
+								</p>
 								<p style={paragraphStyle}>
 									{getAllBookingResult[selectedCardIndex]?.jadwal?.hargaTiket}
 								</p>
