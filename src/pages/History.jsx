@@ -110,7 +110,6 @@ const History = () => {
 		const idBook = event.target.value;
 
 		navigate('/ticket', { state: { idBook } });
-		console.log(idBook);
 	};
 
 	const handlePayment = event => {
@@ -124,8 +123,6 @@ const History = () => {
 	const penumpang = Math.floor(
 		getAllBookingResult?.totalHarga / getAllBookingResult?.jadwal?.hargaTiket
 	);
-
-	console.log(getAllBookingResult);
 
 	return (
 		<Container className="mt-5">

@@ -54,12 +54,11 @@ const Ticket = () => {
 
 	// get bookingid
 	const idBooking = location.state.idBook;
-	console.log(`dari tiket ${idBooking}`);
 
 	useEffect(() => {
 		dispatch(getBooking(token, idBooking));
 	}, [dispatch]);
-	// console.log(getBookingResult)
+
 	const penumpang = Math.floor(
 		getBookingResult?.totalHarga / getBookingResult?.jadwal?.hargaTiket
 	);
