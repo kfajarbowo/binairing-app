@@ -44,12 +44,6 @@ git clone https://github.com/kfajarbowo/binairing-app.git
 npm install
 ```
 
-3. Enter your API in `redux folder`
-
-```JS
-const response = await axios.get(`ENTER YOUR API`);
-```
-
 ## Roadmap
 
 See the [open issues](https://github.com/ShaanCoding/ReadME-Generator/issues) for a list of proposed features (and known issues).
